@@ -23,6 +23,8 @@ void klog_write(int level, const char *fmt, ...) {
 
 #endif
 
+char swarp_supported = 0;
+
 int read_31_bytes(char *path, char *buf) {
     int fd;
     ssize_t ret;
@@ -88,6 +90,7 @@ static void dashd_firmware_update(void) {
         firmware_buf = warp_firmware;
         firmware_len = 0x1980;
     } else if (access("/proc/swarp_chg_exist", F_OK) == 0) {
+        swarp_supported = 1;
         for (tmp = 0; tmp < 5; tmp++) {
             memset(buf, 0, sizeof(buf));
             read_31_bytes("/proc/swarp_chg_exist", buf);
